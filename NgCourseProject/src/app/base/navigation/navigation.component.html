@@ -1,0 +1,31 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a routerLink="" class="navbar-brand">Пица</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul ngbNav #nav="ngbNav" class="nav navbar-nav navbar-right">
+        <li ngbNavItem>
+          <a *ngIf="isLogged" ngbNavLink routerLink="/cause/create" routerLinkActive="router-link-active">Поръчай пица</a>
+        </li>
+        <li ngbDropdown class="dropdown">
+          <a href class="nav-link" ngbDropdownToggle (click)="(false)">User</a>
+          <ul ngbDropdownMenu class="dropdown-menu">
+            <li *ngIf="!isLogged" ngbDropdownItem>
+              <a routerLink="/user/login">Login</a>
+            </li>
+            <li *ngIf="!isLogged" ngbDropdownItem>
+              <a routerLink="/user/register">Register</a>
+            </li>
+            <li *ngIf="isLogged" ngbDropdownItem>
+              <a routerLink="/user/profile">Profile</a>
+            </li>
+            <li *ngIf="isLogged" ngbDropdownItem>
+              <a href="#" (click)="logout()">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
