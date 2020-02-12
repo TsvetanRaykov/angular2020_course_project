@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { from } from 'rxjs';
 
 @Component({
   selector: 'app-navigation',
@@ -7,6 +6,7 @@ import { from } from 'rxjs';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
+  collapsed = true;
   get isLogged(): boolean {
     return false;
   }

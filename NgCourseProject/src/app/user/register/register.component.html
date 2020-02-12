@@ -1,0 +1,30 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex w-100 justify-content-center">
+    <div class="w-50">
+      <div class="bg-light text-center mb-4 p-1">
+        <h4>Register form</h4>
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputEmail">Email Address</label>
+        <input formControlName="email" class="w-75 form-control" type="email" email placeholder="Enter email" />
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputPassword">Password</label>
+        <input formControlName="password" class="w-75 form-control" type="password" placeholder="Enter password" />
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputPassword2">Repeat Password</label>
+        <input formControlName="RepeatPassword" class="w-75 form-control" type="password" placeholder="Repeat password" />
+      </div>
+      <div class="form-group d-flex">
+        <div class="w-25"></div>
+        <div class="w-25">
+          <button type="submit" class="btn btn-primary mt-1" [disabled]="registerForm.invalid">Register</button>
+        </div>
+        <div class="w-50">
+          <app-form-errors [formGrp]="registerForm"></app-form-errors>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
