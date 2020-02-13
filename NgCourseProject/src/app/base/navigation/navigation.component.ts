@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth-service.service';
+import { Router } from '@angular/router';
+import { IUser } from '../../interfaces';
 
 @Component({
   selector: 'app-navigation',
@@ -7,10 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
   collapsed = true;
-  get isLogged(): boolean {
-    return false;
+  get User(): IUser {
+    return this.authService.User;
   }
-  constructor() {}
-  logout() {}
+  get isLogged(): boolean {
+    return !!this.User;
+  }
+  constructor(private authService: AuthService, private router: Router) {}
+  logout() {
+    this.authService.logOut().subscribe(() => this.router.navigate(['/user/login']));
+  }
   ngOnInit() {}
 }

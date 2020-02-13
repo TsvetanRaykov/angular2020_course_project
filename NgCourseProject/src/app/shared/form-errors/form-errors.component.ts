@@ -18,11 +18,14 @@ export class FormErrorsComponent implements OnInit {
         Object.keys(ctrl.errors).forEach(validator => {
           const name = this.formatName(k);
           switch (validator) {
+            case 'email':
+              listErrors.push(`${name} is invalid`);
+              break;
             case 'required':
-              listErrors.push(`${name} is required!`);
+              listErrors.push(`${name} is required`);
               break;
             case 'minlength':
-              listErrors.push(`${name} must be at least ${ctrl.errors.minlength.requiredLength} characters!`);
+              listErrors.push(`${name} must be at least ${ctrl.errors.minlength.requiredLength} characters`);
               break;
             default:
               listErrors.push(this.formatName(validator));
