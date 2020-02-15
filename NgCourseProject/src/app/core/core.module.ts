@@ -9,4 +9,4 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, NgbModule, RouterModule],
   exports: [NavigationComponent]
 })
-export class BaseModule {}
+export class CoreModule {}

@@ -1,0 +1,69 @@
+<form [formGroup]="pizzaNewForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex w-100 justify-content-center">
+    <div class="w-50">
+      <div class="bg-light text-center mb-4 p-1">
+        <h4>New Pizza Details</h4>
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputPizzaName">Name</label>
+        <input formControlName="name" id="inputPizzaName" class="w-75 form-control" type="text" placeholder="Pizza name" />
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputPizzaSize">Size</label>
+        <input
+          formControlName="size"
+          id="inputPizzaSize"
+          class="w-25 form-control"
+          type="number"
+          min="1"
+          step="1"
+          placeholder="Pizza size"
+        />
+        <div class="ml-1 pt-2">sm.</div>
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputPizzaWeight">Weight</label>
+        <input
+          formControlName="weight"
+          id="inputPizzaWeight"
+          class="w-25 form-control"
+          type="number"
+          min="1"
+          step="1"
+          placeholder="Pizza width"
+        />
+        <div class="ml-1 pt-2">gr.</div>
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2" for="inputPizzaDesc">Description</label>
+        <textarea formControlName="description" id="inputPizzaDesc" class="w-75 form-control"></textarea>
+      </div>
+      <div class="form-group d-flex">
+        <label class="w-25 d-inline pt-2">Photo</label>
+        <div class="w-75 custom-file">
+          <label class="custom-file-label" for="inputPizzaPhoto" data-browse="Photo" #selectedFileName style="cursor: pointer;"
+            >Select pizza photo</label
+          >
+          <input
+            formControlName="photo"
+            type="file"
+            class="w-75 custom-file-input form-control-file"
+            id="inputPizzaPhoto"
+            #inputPizzaPhoto
+            (change)="onChange(inputPizzaPhoto.files[0])"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-group d-flex">
+        <div class="w-25"></div>
+        <div class="w-25">
+          <button type="submit" class="btn btn-primary mt-1" [disabled]="pizzaNewForm.invalid">Submit</button>
+        </div>
+        <div class="w-50">
+          <app-form-errors [formGrp]="pizzaNewForm"></app-form-errors>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

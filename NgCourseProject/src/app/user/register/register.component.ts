@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MustMatch } from '../../shared/must-match.validator';
-import { AuthService } from '../../services/auth-service.service';
+import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { GlobalMessages } from '../../shared/global.constants';
 import { environment } from 'src/environments/environment';
-import { IUser } from '../../interfaces';
+import { IUser } from '../../models';
 
 @Component({
   selector: 'app-register',

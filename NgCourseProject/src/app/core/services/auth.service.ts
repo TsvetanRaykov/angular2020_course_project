@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Parse } from 'parse';
-import { IUser, IAuthService } from '../interfaces';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { IUser, IAuthService } from '../../models';
 import { from, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,10 +26,10 @@ export class AuthService implements IAuthService {
   }
 
   logIn(user: IUser): Observable<any> {
-    return from(Parse.User.logIn(user.username, user.password).then());
+    return from(Parse.User.logIn(user.username, user.password)).pipe(debounceTime(1000));
   }
 
   logOut(): Observable<any> {
-    return from(Parse.User.logOut());
+    return from(Parse.User.logOut()).pipe(debounceTime(1000));
   }
 }

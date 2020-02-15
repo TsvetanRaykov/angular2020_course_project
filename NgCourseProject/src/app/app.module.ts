@@ -6,22 +6,22 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BaseModule } from './base/base.module';
+import { CoreModule } from './core/core.module';
 import { UserModule } from './user/user.module';
 import { NotFound404Component } from './not-found404/not-found404.component';
-import { HomeModule } from './home/home.module';
+import { PizzaModule } from './pizza/pizza.module';
 
 @NgModule({
   declarations: [AppComponent, NotFound404Component],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BaseModule,
+    CoreModule,
     NgbModule,
     UserModule,
-    HomeModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({ timeOut: 3000, positionClass: 'toast-top-center', preventDuplicates: false })
+    ToastrModule.forRoot({ timeOut: 2000, positionClass: 'toast-bottom-center', preventDuplicates: false }),
+    PizzaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
