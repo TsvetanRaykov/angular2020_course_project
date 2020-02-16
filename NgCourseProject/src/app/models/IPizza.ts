@@ -1,4 +1,5 @@
 import { IPhoto } from './IPhoto';
+import { IPizzaType } from './IPizzaType';
 
 export interface IPizza {
   objectId?: string;
@@ -6,4 +7,5 @@ export interface IPizza {
   weight: number;
   description: string;
   photo: IPhoto;
+  types: IPizzaType[];
 }

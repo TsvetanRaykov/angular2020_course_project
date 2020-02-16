@@ -20,7 +20,7 @@ import { PizzaModule } from './pizza/pizza.module';
     NgbModule,
     UserModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({ timeOut: 2000, positionClass: 'toast-bottom-center', preventDuplicates: false }),
+    ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: false }),
     PizzaModule
   ],
   providers: [],

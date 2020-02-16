@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss', '../../shared/form.validation.styles.scss']
 })
 export class LoginComponent {
   loginForm: FormGroup;

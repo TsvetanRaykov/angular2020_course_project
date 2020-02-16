@@ -2,3 +2,59 @@
   background-color: #17a2b8;
   color: white;
 }
+
+#selectedFileName {
+  cursor: pointer;
+  color: #6c757d;
+}
+.pizza-type-input,
+.pizza-type-label {
+  font-size: small;
+  min-width: 80px;
+}
+
+.pizza-type-label {
+  padding: 2px 5px;
+  font-weight: bold;
+  color: #6c757d;
+}
+
+.fas {
+  font-size: xx-large;
+  cursor: pointer;
+}
+
+.add-type-disabled {
+  color: grey;
+}
+.invalid {
+  border-left: 5px solid red;
+}
+.pizza-type-ready {
+  box-sizing: border-box;
+  padding: 3px 0;
+  border: 1px solid red;
+  border-radius: 3px;
+}
+
+.p-type-size,
+.p-type-weight,
+.p-type-price {
+  display: inline-block;
+  // margin-right: 20px;
+  font-weight: bold;
+  color: black;
+  font-style: italic;
+}
+.p-type-size {
+  min-width: 130px;
+  color: green;
+}
+.p-type-weight {
+  min-width: 110px;
+  padding: 0 5px;
+}
+.p-type-measure {
+  font-size: x-small;
+  color: #6c757d;
+}

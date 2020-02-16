@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-form-errors',
@@ -13,8 +13,8 @@ export class FormErrorsComponent implements OnInit {
   get errors() {
     const listErrors = [];
     Object.keys(this.formGrp.controls).forEach(k => {
-      const ctrl = this.formGrp.controls[k];
-      if (ctrl.errors) {
+      const ctrl = this.formGrp.controls[k] as FormControl;
+      if ((ctrl.touched || ctrl.dirty) && ctrl.errors) {
         Object.keys(ctrl.errors).forEach(validator => {
           const name = this.formatName(k);
           switch (validator) {

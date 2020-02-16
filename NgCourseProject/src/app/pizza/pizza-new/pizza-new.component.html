@@ -1,47 +1,101 @@
-<form [formGroup]="pizzaNewForm" (ngSubmit)="onSubmit()">
-  <div class="d-flex w-100 justify-content-center">
-    <div class="w-50">
+<div class="container-fluid d-flex justify-content-between w-100">
+  <div class="w-50 d-flex justify-content-center">
+    <form [formGroup]="pizzaNewForm" (ngSubmit)="onSubmit()" class="w-50">
       <div class="bg-light text-center mb-4 p-1">
         <h4>New Pizza Details</h4>
       </div>
       <div class="form-group d-flex">
         <label class="w-25 d-inline pt-2" for="inputPizzaName">Name</label>
-        <input formControlName="name" id="inputPizzaName" class="w-75 form-control" type="text" placeholder="Pizza name" />
+        <input formControlName="name" id="inputPizzaName" class="w-75 form-control" type="text" placeholder="Pizza" />
       </div>
       <div class="form-group d-flex">
-        <label class="w-25 d-inline pt-2" for="inputPizzaSize">Size</label>
-        <input
-          formControlName="size"
-          id="inputPizzaSize"
-          class="w-25 form-control"
-          type="number"
-          min="1"
-          step="1"
-          placeholder="Pizza size"
-        />
-        <div class="ml-1 pt-2">sm.</div>
-      </div>
-      <div class="form-group d-flex">
-        <label class="w-25 d-inline pt-2" for="inputPizzaWeight">Weight</label>
-        <input
-          formControlName="weight"
-          id="inputPizzaWeight"
-          class="w-25 form-control"
-          type="number"
-          min="1"
-          step="1"
-          placeholder="Pizza width"
-        />
-        <div class="ml-1 pt-2">gr.</div>
+        <label class="w-25 d-inline pt-2" for="inputPizzaWeight">Type</label>
+        <div class="d-flex flex-column flex w-75 justify-content-between">
+          <div class="d-flex w-100" *ngFor="let type of newPizzaTypes">
+            <div class="pizza-type-ready w-100 justify-content-around">
+              <span class="p-type-size">{{ type.size }}</span>
+              <span class="p-type-weight"
+                >{{ type.weight }}
+                <span class="p-type-measure">grams</span>
+              </span>
+              <span class="p-type-price"
+                >{{ type.price }}
+                <span class="p-type-measure">bgn</span>
+              </span>
+            </div>
+            <div class="d-flex flex-column justify-content-end">
+              <i class="fas fa-minus ml-2 text-danger" title="Add type" (click)="handlePizzaTypeRemove(type)"></i>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="input-group d-flex flex-column">
+              <label for="inputGroupPizzaSize" class="pizza-type-label bg-light w-100">Size</label>
+              <select
+                [ngClass]="{ invalid: !isTypeValid.size, 'ng-valid': isTypeValid.size }"
+                class="form-control custom-select pizza-type-input"
+                id="inputGroupPizzaSize"
+                formControlName="size"
+              >
+                <option *ngFor="let size of pizzaSizes" [ngValue]="size">{{ size }}</option>
+              </select>
+            </div>
+            <div class="mx-2 w-75">
+              <label for="inputPizzaWeight" class="pizza-type-label bg-light w-100">Weight</label>
+              <input
+                [ngClass]="{ invalid: !isTypeValid.weight, 'ng-valid': isTypeValid.weight }"
+                formControlName="weight"
+                id="inputPizzaWeight"
+                class="form-control pizza-type-input"
+                type="number"
+                min="1"
+                step="5"
+                placeholder="Grams"
+              />
+            </div>
+
+            <div>
+              <label for="inputPizzaPrice" class="pizza-type-label bg-light w-100">Price</label>
+              <input
+                [ngClass]="{ invalid: !isTypeValid.price, 'ng-valid': isTypeValid.price }"
+                id="inputPizzaPrice"
+                type="number"
+                class="form-control pizza-type-input"
+                formControlName="price"
+                placeholder="BGN"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div class="d-flex flex-column justify-content-end">
+              <i
+                [ngClass]="{ 'text-secondary': false, 'text-info': true }"
+                class="fas fa-plus ml-2"
+                title="Add type"
+                (click)="handlePizzaTypeAdd()"
+              ></i>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="form-group d-flex">
         <label class="w-25 d-inline pt-2" for="inputPizzaDesc">Description</label>
-        <textarea formControlName="description" id="inputPizzaDesc" class="w-75 form-control"></textarea>
+        <textarea
+          formControlName="description"
+          id="inputPizzaDesc"
+          class="w-75 form-control"
+          placeholder="Briefly introduce this pizza ..."
+        ></textarea>
       </div>
       <div class="form-group d-flex">
         <label class="w-25 d-inline pt-2">Photo</label>
         <div class="w-75 custom-file">
-          <label class="custom-file-label" for="inputPizzaPhoto" data-browse="Photo" #selectedFileName style="cursor: pointer;"
+          <label
+            class="custom-file-label"
+            for="inputPizzaPhoto"
+            data-browse="Photo"
+            id="selectedFileName"
+            #selectedFileName
+            style="cursor: pointer;"
             >Select pizza photo</label
           >
           <input
@@ -50,20 +104,32 @@
             class="w-75 custom-file-input form-control-file"
             id="inputPizzaPhoto"
             #inputPizzaPhoto
-            (change)="onChange(inputPizzaPhoto.files[0])"
-            required
+            (change)="handlePhotoChange(inputPizzaPhoto.files[0])"
           />
         </div>
       </div>
       <div class="form-group d-flex">
         <div class="w-25"></div>
         <div class="w-25">
-          <button type="submit" class="btn btn-primary mt-1" [disabled]="pizzaNewForm.invalid">Submit</button>
+          <button type="submit" class="btn btn-primary mt-1 w-100" [disabled]="pizzaNewForm.invalid">Submit</button>
         </div>
-        <div class="w-50">
+        <div class="w-50 pl-5">
           <app-form-errors [formGrp]="pizzaNewForm"></app-form-errors>
         </div>
       </div>
+      <input type="hidden" formControlName="hastipes" />
+    </form>
+  </div>
+  <div class="w-50 d-flex flex-column justify-content-start">
+    <div class="w-50">
+      <div class="bg-light text-center mb-4 p-1">
+        <h4>Preview</h4>
+      </div>
+      <app-pizza [pizza]="newPizza"></app-pizza>
     </div>
   </div>
-</form>
+</div>
+
+<ngx-spinner [fullScreen]="true" type="ball-climbing-dot" size="large">
+  <p class="loading">Preparing Pizza ...</p>
+</ngx-spinner>

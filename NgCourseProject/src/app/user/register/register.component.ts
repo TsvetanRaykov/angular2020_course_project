@@ -11,16 +11,16 @@ import { IUser } from '../../models';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss', '../../shared/form.validation.styles.scss']
 })
 export class RegisterComponent {
   registerForm: FormGroup;
   constructor(private fb: FormBuilder, private authService: AuthService, private toastr: ToastrService, private router: Router) {
     this.registerForm = this.fb.group(
       {
-        email: new FormControl('', [Validators.required]),
-        password: new FormControl('', [Validators.required, Validators.minLength(3)]),
-        RepeatPassword: new FormControl('')
+        email: new FormControl(null, [Validators.required]),
+        password: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+        RepeatPassword: new FormControl(null)
       },
       { validators: [MustMatch('password', 'RepeatPassword', GlobalMessages.PASSWORDS_NOT_MATCH)] }
     );
