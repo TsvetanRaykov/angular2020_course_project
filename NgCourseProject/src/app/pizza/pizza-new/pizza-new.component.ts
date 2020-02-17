@@ -57,10 +57,12 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
     this.localSubscriptions.push(
       this.pizzaNewForm.valueChanges.subscribe(() => {
         this.newPizza = this.getPizza();
+        const hasTipes = this.pizzaNewForm.get('hastipes');
         if (this.newPizzaTypes.length === 0) {
-          const hasTipes = this.pizzaNewForm.get('hastipes');
           hasTipes.setErrors({ 'Please, add at least one type': true });
           hasTipes.markAsDirty();
+        } else {
+          hasTipes.setErrors(null);
         }
       })
     );
@@ -84,9 +86,11 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
     ) {
       this.newPizzaTypes.push({ size, weight, price });
     }
+    this.pizzaNewForm.get('hastipes').updateValueAndValidity();
   }
   handlePizzaTypeRemove(e) {
     this.newPizzaTypes = this.newPizzaTypes.filter(t => !Object.is(t, e));
+    this.pizzaNewForm.get('hastipes').updateValueAndValidity();
   }
   handlePhotoChange(file: File) {
     if (file) {
@@ -108,10 +112,9 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
           this.toastr.success(GlobalMessages.PIZA_CREATE_SUCCESS);
           this.router.navigate(['/']);
         },
-        error: () => {
+        error: e => {
           this.toastr.error(GlobalMessages.PIZA_CREATE_FAILED);
-        },
-        complete: () => {
+          console.log(e);
           this.spinner.hide();
         }
       })
@@ -123,7 +126,7 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
       name: this.pizza('name'),
       description: this.pizza('description'),
       weight: this.pizza('weight'),
-      photo: this.pizzaPhoto ? { name: this.pizza('name'), base64: this.pizzaPhoto } : null,
+      photo: this.pizzaPhoto ? { photoName: this.pizza('name'), base64: this.pizzaPhoto } : null,
       types: this.newPizzaTypes
     };
   }

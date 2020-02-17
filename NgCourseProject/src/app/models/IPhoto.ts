@@ -1,5 +1,5 @@
 export interface IPhoto {
-  name: string;
+  photoName: string;
   url?: string;
   base64?: string;
 }

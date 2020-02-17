@@ -7,13 +7,12 @@ import { IPizza } from 'src/app/models';
   styleUrls: ['./pizza.component.scss']
 })
 export class PizzaComponent implements OnInit {
-  @Input()
-  pizza: IPizza;
+  get types() {
+    return this.pizza ? this.pizza.types : [];
+  }
 
   get photoSrc() {
-    return this.pizza && this.pizza.photo
-      ? this.pizza.photo.url || this.pizza.photo.base64
-      : '../../../assets/default-placeholder-250x250.png';
+    return this.pizza && this.pizza.photo ? this.pizza.photo.url || this.pizza.photo.base64 : this.pizzaUnknownPhoto;
   }
 
   get name() {
@@ -23,6 +22,9 @@ export class PizzaComponent implements OnInit {
     return this.pizza ? this.pizza.description : null;
   }
   constructor() {}
+  @Input()
+  pizza: IPizza;
+  pizzaUnknownPhoto = '../../../assets/default-placeholder-250x250.png';
 
   ngOnInit() {}
 }
