@@ -1,9 +1,11 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
   <div class="d-flex w-100 justify-content-center">
     <div class="w-50">
-      <div class="bg-light text-center mb-4 p-1">
+      <div class="bg-light text-center mb-2 p-1">
         <h4>Register for delivery</h4>
       </div>
+      <app-google-map></app-google-map>
+      <br />
       <div class="form-group d-flex">
         <label class="w-25 d-inline pt-2" for="inputEmail">Email Address</label>
         <input formControlName="email" class="w-75 form-control" type="email" email placeholder="Enter email" />
