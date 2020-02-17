@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IPizza } from 'src/app/models';
+import { IPizza, IPizzaType } from 'src/app/models';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PizzaOrderComponent } from '../pizza-order/pizza-order.component';
 
 @Component({
   selector: 'app-pizza',
@@ -21,10 +23,24 @@ export class PizzaComponent implements OnInit {
   get description() {
     return this.pizza ? this.pizza.description : null;
   }
-  constructor() {}
+  constructor(private modalService: NgbModal) {}
   @Input()
   pizza: IPizza;
   pizzaUnknownPhoto = '../../../assets/default-placeholder-250x250.png';
 
   ngOnInit() {}
+  handleOrder(type: IPizzaType, pizza: IPizza) {
+    console.log(type, pizza);
+    const modalRef = this.modalService.open(PizzaOrderComponent, { centered: true, backdrop: 'static' });
+    const order = { ...pizza, types: [type] };
+    modalRef.componentInstance.order = order;
+    modalRef.result.then(
+      a => {
+        console.log(a);
+      },
+      b => {
+        console.log(b);
+      }
+    );
+  }
 }

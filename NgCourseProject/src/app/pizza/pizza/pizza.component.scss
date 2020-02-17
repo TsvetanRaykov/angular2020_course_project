@@ -1,6 +1,8 @@
 .pizza-placeholder {
   background-color: #e9eef1;
   border-radius: 3px;
+  height: 238px;
+  box-sizing: border-box;
 }
 .no-pizza::after {
   content: 'Pizza image';
@@ -84,4 +86,10 @@
 .btn:active:before {
   -webkit-transform: scaleY(1);
   transform: scaleY(1);
+}
+
+.card {
+  height: 240px;
+  overflow: auto;
+  box-sizing: border-box;
 }

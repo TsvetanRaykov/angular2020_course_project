@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PizzaService } from 'src/app/core/services/pizza.service';
 import { IPizza } from 'src/app/models';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pizza-list',
@@ -9,11 +9,9 @@ import { IPizza } from 'src/app/models';
 })
 export class PizzaListComponent implements OnInit {
   pizzas: IPizza[];
-  constructor(private pizzaService: PizzaService) {}
-
-  ngOnInit() {
-    this.pizzaService.getAll().subscribe(data => {
-      this.pizzas = data;
-    });
+  constructor(private activatedRoute: ActivatedRoute) {
+    this.pizzas = activatedRoute.snapshot.data[0];
   }
+
+  ngOnInit() {}
 }

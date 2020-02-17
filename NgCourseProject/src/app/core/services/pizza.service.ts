@@ -3,6 +3,7 @@ import { IPizzaService, IPizza } from 'src/app/models';
 import { Parse } from 'parse';
 import { environment } from 'src/environments/environment';
 import { Observable, Subject, from, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,29 +12,16 @@ export class PizzaService implements IPizzaService {
   create(pizza: IPizza): Observable<any> {
     const Pizza = Parse.Object.extend('Pizza');
     const pizzaPhoto = new Parse.File(pizza.photo.photoName, { base64: pizza.photo.base64 });
-    const { types } = pizza;
-    delete pizza.types;
     const prepared = { ...pizza, photo: pizzaPhoto };
-    const newPizza = new Pizza(prepared);
-    const Type = Parse.Object.extend('Type');
-    const promises = [];
-
-    types.forEach(t => {
-      const pizzaType = new Type(t);
-      pizzaType.set('pizza', newPizza);
-      promises.push(pizzaType.save());
-    });
-
-    return from(Promise.all(promises));
+    const newPizza = new Pizza();
+    return from(newPizza.save(prepared));
   }
-  getAll(): Observable<any> {
+
+  getAll(): Observable<IPizza[]> {
     const Pizza = Parse.Object.extend('Pizza');
     const pizzaQuery = new Parse.Query(Pizza);
-
-    const Type = Parse.Object.pizzaQuery.find().then(data => {
-      console.log(data);
-    });
-    return from(pizzaQuery.find());
+    pizzaQuery.descending('updatedAt');
+    return from(pizzaQuery.find()).pipe(map((p: any) => JSON.parse(JSON.stringify(p))));
   }
   getOneById(id: string): IPizza {
     throw new Error('Method not implemented.');
@@ -44,6 +32,5 @@ export class PizzaService implements IPizzaService {
   constructor() {
     Parse.initialize(environment.PARSE_APP_ID, environment.PARSE_JS_KEY);
     Parse.serverURL = environment.serverURL;
-    Parse.User.enableUnsafeCurrentUser();
   }
 }

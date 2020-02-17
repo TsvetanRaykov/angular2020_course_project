@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-title">Order</h4>
+  <!-- <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button> -->
+</div>
+<div class="modal-body">
+  <p>
+    <strong>Please confirm:</strong>
+  </p>
+  <div class="text-primary">
+    <h3>{{ order.name }}</h3>
+    <span class="text-muted">
+      {{ order.description }}
+    </span>
+  </div>
+  <div class="w-100 d-flex justify-content-between mt-3">
+    <span class="p-type-size">{{ type.size }}</span>
+    <span class="p-type-weight"
+      >{{ type.weight }}
+      <span class="p-type-measure">grams</span>
+    </span>
+    <span class="p-type-price"
+      >{{ type.price | money }}
+      <span class="p-type-measure">bgn</span>
+    </span>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+  <button type="button" class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
+</div>

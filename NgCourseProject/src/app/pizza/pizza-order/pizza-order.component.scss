@@ -1,0 +1,28 @@
+.p-type-size,
+.p-type-weight,
+.p-type-price {
+  display: inline-block;
+  font-weight: bold;
+  color: black;
+  font-style: italic;
+  font-size: x-large;
+}
+.p-type-size {
+  color: green;
+}
+.p-type-weight {
+  padding: 0 5px;
+  font-weight: inherit;
+}
+.p-type-measure {
+  font-size: x-small;
+  color: #6c757d;
+}
+
+.p-name {
+  font-size: xx-large;
+}
+
+.btn {
+  min-width: 100px;
+}

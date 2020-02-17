@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -15,6 +15,7 @@ import { PizzaModule } from './pizza/pizza.module';
   declarations: [AppComponent, NotFound404Component],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     CoreModule,
     NgbModule,

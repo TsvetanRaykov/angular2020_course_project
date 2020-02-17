@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Parse } from 'parse';
-import { environment } from '../../../environments/environment';
 import { PizzaService } from '../../core/services/pizza.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GlobalMessages } from '../../shared/global.constants';
 import { Router } from '@angular/router';
@@ -36,10 +34,7 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
-  ) {
-    Parse.initialize(environment.PARSE_APP_ID, environment.PARSE_JS_KEY);
-    Parse.serverURL = environment.serverURL;
-  }
+  ) {}
 
   ngOnInit() {
     this.pizzaNewForm = this.fb.group({
@@ -126,7 +121,7 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
       name: this.pizza('name'),
       description: this.pizza('description'),
       weight: this.pizza('weight'),
-      photo: this.pizzaPhoto ? { photoName: this.pizza('name'), base64: this.pizzaPhoto } : null,
+      photo: this.pizzaPhoto ? { photoName: 'photo', base64: this.pizzaPhoto } : null,
       types: this.newPizzaTypes
     };
   }
