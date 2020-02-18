@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, EventEmitter, Output, Input } from '@angular/core';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { google } from 'google-maps';
+import { ILocation } from 'src/app/models';
 
 @Component({
   selector: 'app-google-map',
@@ -14,6 +15,10 @@ export class GoogleMapComponent implements OnInit {
   address: string;
   private geoCoder;
 
+  @Input() inputLocation: ILocation;
+
+  @Output() locationChanged = new EventEmitter<ILocation>();
+
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
 
@@ -22,7 +27,13 @@ export class GoogleMapComponent implements OnInit {
   ngOnInit() {
     // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-      this.setCurrentLocation();
+      if (this.inputLocation) {
+        this.latitude = this.inputLocation.latitude;
+        this.longitude = this.inputLocation.longitude;
+        this.zoom = 8;
+      } else {
+        this.setCurrentLocation();
+      }
       this.geoCoder = new google.maps.Geocoder();
 
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
@@ -60,7 +71,6 @@ export class GoogleMapComponent implements OnInit {
   }
 
   markerDragEnd($event: MouseEvent) {
-    console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.getAddress(this.latitude, this.longitude);
@@ -68,12 +78,11 @@ export class GoogleMapComponent implements OnInit {
 
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log(results);
-      console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
           this.address = results[0].formatted_address;
+          this.locationChanged.emit({ address: this.address, latitude, longitude });
         } else {
           window.alert('No results found');
         }

@@ -18,13 +18,13 @@ export class NavigationComponent implements OnDestroy {
     return this.authService.User;
   }
   get isLogged() {
-    return !!this.User;
+    return this.authService.isLogged;
   }
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
   logout() {
     this.logoutSub = this.authService.logOut().subscribe(() => {
       this.toastr.success(GlobalMessages.LOGOUT_SUCCESS);
-      this.router.navigate(['/user/login']);
+      this.router.navigate(['/']);
     });
   }
   ngOnDestroy() {

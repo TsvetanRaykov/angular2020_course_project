@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { GlobalMessages } from '../../shared/global.constants';
 import { environment } from 'src/environments/environment';
-import { IUser } from '../../models';
+import { IUser, ILocation } from '../../models';
 
 @Component({
   selector: 'app-register',
@@ -15,32 +15,38 @@ import { IUser } from '../../models';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  location: ILocation;
   constructor(private fb: FormBuilder, private authService: AuthService, private toastr: ToastrService, private router: Router) {
     this.registerForm = this.fb.group(
       {
         email: new FormControl(null, [Validators.required]),
         password: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-        RepeatPassword: new FormControl(null)
+        RepeatPassword: new FormControl(null),
+        phone: new FormControl(null, [Validators.required]),
+        firstname: new FormControl(null),
+        lastname: new FormControl(null)
       },
       { validators: [MustMatch('password', 'RepeatPassword', GlobalMessages.PASSWORDS_NOT_MATCH)] }
     );
   }
-  get email() {
-    return this.registerForm.get('email').value;
-  }
-  get password() {
-    return this.registerForm.get('password').value;
+
+  locationChanged(location: ILocation) {
+    this.location = location;
   }
 
   onSubmit() {
     const aUser: IUser = {
-      username: this.email,
-      password: this.password
+      username: this.user('email'),
+      password: this.user('password'),
+      fullName: `${this.user('firstname')} ${this.user('lastname')}`,
+      phone: this.user('phone'),
+      address: this.location.address.slice(),
+      location: this.location
     };
     this.authService.signUp(aUser).subscribe({
       next: () => {
         this.toastr.success(GlobalMessages.REGISTRATION_SUCCESS);
-        this.authService.logIn(aUser).subscribe({
+        this.authService.logIn(aUser.username, aUser.password).subscribe({
           next: () => {
             this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
             this.router.navigate(['/']);
@@ -69,5 +75,8 @@ export class RegisterComponent {
         }
       }
     });
+  }
+  private user(key: string) {
+    return this.registerForm.get(key).value;
   }
 }

@@ -4,12 +4,13 @@ import { FormErrorsComponent } from './form-errors/form-errors.component';
 import { MoneyPipe } from './money.pipe';
 import { AgmCoreModule } from '@agm/core';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [FormErrorsComponent, MoneyPipe, GoogleMapComponent],
   imports: [
     CommonModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBsm8cICsupexo4-Yln9fshqPXVkA07a4g',
+      apiKey: environment.GOOGLE_API_KEY,
       libraries: ['places']
     })
   ],

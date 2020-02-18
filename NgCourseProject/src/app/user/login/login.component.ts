@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalMessages } from 'src/app/shared/global.constants';
 import { environment } from 'src/environments/environment';
 
@@ -11,9 +11,17 @@ import { environment } from 'src/environments/environment';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss', '../../shared/form.validation.styles.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService, private toastr: ToastrService, private router: Router) {
+  return: string;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private toastr: ToastrService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
@@ -25,11 +33,14 @@ export class LoginComponent {
   get password() {
     return this.loginForm.get('password').value;
   }
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => (this.return = params.return || '/'));
+  }
   onSubmit() {
-    this.authService.logIn({ username: this.email, password: this.password }).subscribe({
+    this.authService.logIn(this.email, this.password).subscribe({
       next: () => {
         this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
-        this.router.navigate(['/']);
+        this.router.navigateByUrl(this.return);
       },
       error: error => {
         this.toastr.error(GlobalMessages.LOGIN_FAILED);

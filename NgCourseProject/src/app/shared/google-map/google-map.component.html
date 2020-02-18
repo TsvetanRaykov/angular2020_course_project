@@ -17,8 +17,8 @@
   <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
 </agm-map>
 
-<h5>Address: {{ address }}</h5>
-<div class="d-flex justify-content-start">
+<h5 class="mb-0">{{ address }}</h5>
+<div class="d-flex justify-content-start small font-italic">
   <div>Latitude: {{ latitude }}</div>
   <div class="ml-5">Longitude: {{ longitude }}</div>
 </div>
