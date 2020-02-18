@@ -7,9 +7,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, ProfileComponent],
-  imports: [CommonModule, UserRoutingModule, ReactiveFormsModule, SharedModule, NgbModule]
+  imports: [CommonModule, UserRoutingModule, ReactiveFormsModule, SharedModule, NgbModule, NgxSpinnerModule]
 })
 export class UserModule {}

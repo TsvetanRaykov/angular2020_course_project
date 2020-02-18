@@ -10,9 +10,9 @@ import { CoreModule } from './core/core.module';
 import { UserModule } from './user/user.module';
 import { NotFound404Component } from './not-found404/not-found404.component';
 import { PizzaModule } from './pizza/pizza.module';
-import { AgmCoreModule } from '@agm/core';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 @NgModule({
-  declarations: [AppComponent, NotFound404Component],
+  declarations: [AppComponent, NotFound404Component, UnauthorizedComponent],
   imports: [
     BrowserModule,
     CommonModule,
@@ -22,11 +22,7 @@ import { AgmCoreModule } from '@agm/core';
     UserModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: false }),
-    PizzaModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBsm8cICsupexo4-Yln9fshqPXVkA07a4g',
-      libraries: ['places']
-    })
+    PizzaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -9,4 +9,7 @@ export class GlobalMessages {
   static readonly LOGOUT_SUCCESS = 'Bye!';
   static readonly PIZA_CREATE_SUCCESS = 'New pizza has been registered for sale';
   static readonly PIZA_CREATE_FAILED = 'Pizza registration failed. Please, inform the support!';
+  static readonly USER_UPDATE_SUCCESS = 'User data has been updated';
+  static readonly USER_UPDATE_NO_CHANGES = 'Nothing to change ...';
+  static readonly USER_UPDATE_FAILED = 'User update failed. Please, inform the support!';
 }

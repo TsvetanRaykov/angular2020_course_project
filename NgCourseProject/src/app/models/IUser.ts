@@ -7,4 +7,6 @@ export interface IUser {
   phone: string;
   address: string;
   location: ILocation;
+  email?: string;
+  role?: string;
 }

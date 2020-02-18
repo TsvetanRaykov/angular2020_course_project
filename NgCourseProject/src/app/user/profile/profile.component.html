@@ -5,16 +5,16 @@
         <h4>{{ user.fullName || user.username }}</h4>
       </div>
       <div class="form-group d-flex">
-        <div class="w-25"></div>
+        <!-- <div class="w-25"></div> -->
         <button
           type="button"
-          class="btn btn-outline-primary w-75"
+          class="btn btn-outline-primary w-100"
           (click)="handleMapComponent()"
           [attr.aria-expanded]="!isMapCollapsed"
           aria-controls="map"
           title="Open map"
         >
-          {{ isMapCollapsed ? 'Edit daelivery adress' : 'Close map' }}
+          {{ isMapCollapsed ? 'Edit shipping adress' : 'Close map' }}
         </button>
       </div>
       <div id="map" [ngbCollapse]="isMapCollapsed">
@@ -66,3 +66,6 @@
     </div>
   </div>
 </form>
+<ngx-spinner [fullScreen]="true" type="ball-climbing-dot" size="large">
+  <p class="loading">Updating ...</p>
+</ngx-spinner>

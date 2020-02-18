@@ -1,30 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalMessages } from 'src/app/shared/global.constants';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss', '../../shared/form.validation.styles.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   return: string;
+  loginSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {
     this.loginForm = this.fb.group({
-      email: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+      email: new FormControl(null, [Validators.required]),
+      password: new FormControl(null, [Validators.required])
     });
   }
   get email() {
@@ -36,14 +40,22 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => (this.return = params.return || '/'));
   }
+  ngOnDestroy() {
+    this.spinner.hide();
+    this.loginSubscription.unsubscribe();
+  }
   onSubmit() {
-    this.authService.logIn(this.email, this.password).subscribe({
+    this.spinner.show();
+    this.loginSubscription = this.authService.logIn(this.email, this.password).subscribe({
       next: () => {
+        this.spinner.hide();
         this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
         this.router.navigateByUrl(this.return);
       },
       error: error => {
+        this.spinner.hide();
         this.toastr.error(GlobalMessages.LOGIN_FAILED);
+
         if (!environment.production) {
           console.error(error);
         }

@@ -46,4 +46,13 @@ export class AuthService implements IAuthService {
   logOut(): Observable<any> {
     return from(Parse.User.logOut()).pipe(debounceTime(1000));
   }
+
+  update(changes: {}): Observable<any> {
+    const user = Parse.User.current();
+    Object.keys(changes).forEach(k => {
+      user.set(k, changes[k]);
+    });
+
+    return from(user.save());
+  }
 }
