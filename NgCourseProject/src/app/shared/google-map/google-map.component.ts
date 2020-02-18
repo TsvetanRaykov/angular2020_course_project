@@ -30,6 +30,7 @@ export class GoogleMapComponent implements OnInit {
       if (this.inputLocation) {
         this.latitude = this.inputLocation.latitude;
         this.longitude = this.inputLocation.longitude;
+        this.address = this.inputLocation.address;
         this.zoom = 8;
       } else {
         this.setCurrentLocation();

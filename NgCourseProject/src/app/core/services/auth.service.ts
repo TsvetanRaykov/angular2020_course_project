@@ -50,7 +50,12 @@ export class AuthService implements IAuthService {
   update(changes: {}): Observable<any> {
     const user = Parse.User.current();
     Object.keys(changes).forEach(k => {
-      user.set(k, changes[k]);
+      if (k === 'location') {
+        const location = new Parse.GeoPoint(changes[k]);
+        user.set(k, location);
+      } else {
+        user.set(k, changes[k]);
+      }
     });
 
     return from(user.save());

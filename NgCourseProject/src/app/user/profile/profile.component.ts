@@ -15,28 +15,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private componentFactory: ComponentFactoryResolver,
-    private spinner: NgxSpinnerService
-  ) {
-    this.profileForm = this.fb.group(
-      {
-        email: new FormControl(null, [Validators.required]),
-        password: new FormControl(null, [Validators.minLength(3)]),
-        RepeatPassword: new FormControl(null),
-        phone: new FormControl(null, [Validators.required]),
-        firstname: new FormControl(null),
-        lastname: new FormControl(null)
-      },
-      { validators: [MustMatch('password', 'RepeatPassword', GlobalMessages.PASSWORDS_NOT_MATCH)] }
-    );
-  }
-  @ViewChild(TemplateRef, { read: ViewContainerRef })
-  private googleMapTemplateViewContainerRef: ViewContainerRef;
-
   user: IUser;
   profileForm: FormGroup;
   location: ILocation;
@@ -45,7 +23,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userChanges = {};
   updateSubscription: Subscription;
 
-  ngOnInit(): void {
+  @ViewChild(TemplateRef, { read: ViewContainerRef })
+  private googleMapTemplateViewContainerRef: ViewContainerRef;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private toastr: ToastrService,
+    private componentFactory: ComponentFactoryResolver,
+    private spinner: NgxSpinnerService
+  ) {
     const setter = (target, key, value) => {
       if (target[key] !== value) {
         this.userChanges[key] = value;
@@ -68,6 +55,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.location = this.user.location;
     this.location.address = this.user.address;
   }
+
+  ngOnInit(): void {}
   ngOnDestroy(): void {
     this.updateSubscription.unsubscribe();
     this.spinner.hide();
