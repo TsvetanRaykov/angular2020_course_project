@@ -8,7 +8,7 @@ import { IPizza } from 'src/app/models';
   styleUrls: ['./pizza-order.component.scss']
 })
 export class PizzaOrderComponent {
-  @Input() order: IPizza;
+  @Input() order: any;
 
   get type() {
     return this.order.types[0];

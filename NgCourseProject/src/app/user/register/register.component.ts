@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 export class RegisterComponent implements OnDestroy {
   registerForm: FormGroup;
   location: ILocation;
-  serviceSubscription: Subscription;
+  subscribes: Subscription[] = [];
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -45,7 +45,7 @@ export class RegisterComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.spinner.hide();
-    this.serviceSubscription.unsubscribe();
+    this.subscribes.forEach(s => s.unsubscribe());
   }
   onSubmit() {
     this.spinner.show();
@@ -57,35 +57,37 @@ export class RegisterComponent implements OnDestroy {
       address: this.location.address.slice(),
       location: this.location
     };
-    this.serviceSubscription = this.authService.signUp(aUser).subscribe({
-      next: () => {
-        this.spinner.hide();
-        this.toastr.success(GlobalMessages.REGISTRATION_SUCCESS);
-        this.authService.logIn(aUser.username, aUser.password).subscribe({
-          next: () => {
-            this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
-            this.router.navigate(['/']);
-          },
-          error: error => {
-            this.toastr.error(GlobalMessages.LOGIN_FAILED);
-            if (!environment.production) {
-              console.error(error);
+    this.subscribes.push(
+      this.authService.signUp(aUser).subscribe({
+        next: () => {
+          this.spinner.hide();
+          this.toastr.success(GlobalMessages.REGISTRATION_SUCCESS);
+          this.authService.logIn(aUser.username, aUser.password).subscribe({
+            next: () => {
+              this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
+              this.router.navigate(['/']);
+            },
+            error: error => {
+              this.toastr.error(GlobalMessages.LOGIN_FAILED);
+              if (!environment.production) {
+                console.error(error);
+              }
             }
+          });
+        },
+        error: error => {
+          this.spinner.hide();
+          if (error.code === 202 && error.message.includes('exists')) {
+            this.toastr.error(GlobalMessages.REGISTRATION_EXISTS);
+          } else {
+            this.toastr.error(GlobalMessages.REGISTRATION_FAILED);
           }
-        });
-      },
-      error: error => {
-        this.spinner.hide();
-        if (error.code === 202 && error.message.includes('exists')) {
-          this.toastr.error(GlobalMessages.REGISTRATION_EXISTS);
-        } else {
-          this.toastr.error(GlobalMessages.REGISTRATION_FAILED);
+          if (!environment.production) {
+            console.error(error);
+          }
         }
-        if (!environment.production) {
-          console.error(error);
-        }
-      }
-    });
+      })
+    );
   }
   private user(key: string) {
     return this.registerForm.get(key).value;

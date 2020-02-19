@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   return: string;
-  loginSubscription: Subscription;
+  subscribes: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -42,24 +42,26 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.spinner.hide();
-    this.loginSubscription.unsubscribe();
+    this.subscribes.forEach(s => s.unsubscribe());
   }
   onSubmit() {
     this.spinner.show();
-    this.loginSubscription = this.authService.logIn(this.email, this.password).subscribe({
-      next: () => {
-        this.spinner.hide();
-        this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
-        this.router.navigateByUrl(this.return);
-      },
-      error: error => {
-        this.spinner.hide();
-        this.toastr.error(GlobalMessages.LOGIN_FAILED);
+    this.subscribes.push(
+      this.authService.logIn(this.email, this.password).subscribe({
+        next: () => {
+          this.spinner.hide();
+          this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
+          this.router.navigateByUrl(this.return);
+        },
+        error: error => {
+          this.spinner.hide();
+          this.toastr.error(GlobalMessages.LOGIN_FAILED);
 
-        if (!environment.production) {
-          console.error(error);
+          if (!environment.production) {
+            console.error(error);
+          }
         }
-      }
-    });
+      })
+    );
   }
 }

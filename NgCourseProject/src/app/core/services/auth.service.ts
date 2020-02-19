@@ -17,6 +17,10 @@ export class AuthService implements IAuthService {
     return !!this.User;
   }
 
+  get isAdmin() {
+    return this.isLogged && this.User.role === 'staff';
+  }
+
   constructor() {
     Parse.initialize(environment.PARSE_APP_ID, environment.PARSE_JS_KEY);
     Parse.serverURL = environment.serverURL;

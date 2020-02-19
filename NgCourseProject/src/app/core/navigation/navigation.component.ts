@@ -5,6 +5,8 @@ import { IUser } from '../../models';
 import { Subscription } from 'rxjs';
 import { GlobalMessages } from 'src/app/shared/global.constants';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-navigation',
@@ -13,21 +15,43 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavigationComponent implements OnDestroy {
   collapsed = true;
-  logoutSub: Subscription;
+  subsribes: Subscription[] = [];
   get User(): IUser {
     return this.authService.User;
   }
   get isLogged() {
     return this.authService.isLogged;
   }
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
+  get isAdmin() {
+    return this.authService.isAdmin;
+  }
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
+  ) {}
   logout() {
-    this.logoutSub = this.authService.logOut().subscribe(() => {
-      this.toastr.success(GlobalMessages.LOGOUT_SUCCESS);
-      this.router.navigate(['/']);
-    });
+    this.spinner.show();
+    this.subsribes.push(
+      this.authService.logOut().subscribe(
+        () => {
+          this.spinner.hide();
+          this.toastr.success(GlobalMessages.LOGOUT_SUCCESS);
+          this.router.navigate(['/']);
+        },
+        error => {
+          this.spinner.hide();
+          if (!environment.production) {
+            console.error(error);
+          }
+        }
+      )
+    );
   }
   ngOnDestroy() {
-    this.logoutSub.unsubscribe();
+    this.subsribes.forEach(s => s.unsubscribe());
+    this.spinner.hide();
   }
 }
