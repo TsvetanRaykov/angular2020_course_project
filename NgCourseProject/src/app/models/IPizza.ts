@@ -8,4 +8,5 @@ export interface IPizza {
   description: string;
   photo: IPhoto;
   types: IPizzaType[];
+  onSale: boolean;
 }

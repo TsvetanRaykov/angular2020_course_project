@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isMapCollapsed = true;
   mapLoaded = false;
   userChanges = {};
-  updateSubscription: Subscription;
+  subscribes: Subscription[] = [];
 
   @ViewChild(TemplateRef, { read: ViewContainerRef })
   private googleMapTemplateViewContainerRef: ViewContainerRef;
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
   ngOnDestroy(): void {
-    this.updateSubscription.unsubscribe();
+    this.subscribes.forEach(s => s.unsubscribe());
     this.spinner.hide();
   }
   onSubmit() {
@@ -74,19 +74,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     if (Object.entries(this.userChanges).length > 0) {
       this.spinner.show();
-      this.updateSubscription = this.authService.update(this.userChanges).subscribe({
-        next: () => {
-          this.toastr.success(GlobalMessages.USER_UPDATE_SUCCESS);
-          this.spinner.hide();
-        },
-        error: error => {
-          this.toastr.error(GlobalMessages.USER_UPDATE_FAILED);
-          if (!environment.production) {
-            console.error(error);
+      this.subscribes.push(
+        this.authService.update(this.userChanges).subscribe({
+          next: () => {
+            this.toastr.success(GlobalMessages.USER_UPDATE_SUCCESS);
             this.spinner.hide();
+          },
+          error: error => {
+            this.toastr.error(GlobalMessages.USER_UPDATE_FAILED);
+            if (!environment.production) {
+              console.error(error);
+              this.spinner.hide();
+            }
           }
-        }
-      });
+        })
+      );
     } else {
       this.toastr.info(GlobalMessages.USER_UPDATE_NO_CHANGES);
     }

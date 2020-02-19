@@ -122,7 +122,8 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
       description: this.pizza('description'),
       weight: this.pizza('weight'),
       photo: this.pizzaPhoto ? { photoName: 'photo', base64: this.pizzaPhoto } : null,
-      types: this.newPizzaTypes
+      types: this.newPizzaTypes,
+      onSale: true
     };
   }
 

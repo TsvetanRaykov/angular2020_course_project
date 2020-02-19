@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { NotFound404Component } from './not-found404/not-found404.component';
 import { PizzaModule } from './pizza/pizza.module';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { OrderModule } from './order/order.module';
 @NgModule({
   declarations: [AppComponent, NotFound404Component, UnauthorizedComponent],
   imports: [
@@ -22,7 +23,8 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     UserModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: false }),
-    PizzaModule
+    PizzaModule,
+    OrderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

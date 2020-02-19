@@ -32,10 +32,14 @@
     </ul>
   </div>
 </nav>
-<div *ngIf="isAdmin" class="container-fluid d-flex justify-content-between">
-  <button class="btn btn-outline-danger w-25">Orders</button>
-  <button class="btn btn-outline-info w-25">All Pizzas</button>
-  <button class="btn btn-outline-success w-25" routerLink="/pizza/new" routerLinkActive="router-link-active">New Pizza</button>
+<div class="container-fluid d-flex justify-content-between">
+  <ng-template [ngIf]="isLogged">
+    <button class="btn btn-outline-primary w-25" routerLink="/order">Orders</button>
+  </ng-template>
+  <ng-template [ngIf]="isAdmin">
+    <button class="btn btn-outline-info w-25">Menu</button>
+    <button class="btn btn-outline-success w-25" routerLink="/pizza/new" routerLinkActive="router-link-active">New Pizza</button>
+  </ng-template>
 </div>
 <ngx-spinner [fullScreen]="true" type="ball-climbing-dot" size="large">
   <p class="loading">Exiting ...</p>

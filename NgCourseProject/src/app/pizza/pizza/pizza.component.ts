@@ -4,13 +4,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PizzaOrderComponent } from '../pizza-order/pizza-order.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
-import { PizzaService } from 'src/app/core/services/pizza.service';
 import { Subscription } from 'rxjs';
 import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GlobalMessages } from 'src/app/shared/global.constants';
 import { environment } from 'src/environments/environment';
+import { OrderService } from 'src/app/core/services/order.service';
 
 @Component({
   selector: 'app-pizza',
@@ -26,7 +26,7 @@ export class PizzaComponent implements OnDestroy {
     private modalService: NgbModal,
     private authService: AuthService,
     private router: Router,
-    private pizzaService: PizzaService,
+    private orderService: OrderService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
   ) {}
@@ -76,7 +76,7 @@ export class PizzaComponent implements OnDestroy {
           user: this.authService.User
         };
         this.subscribes.push(
-          this.pizzaService.makeOrder(newOrder).subscribe({
+          this.orderService.makeOrder(newOrder).subscribe({
             next: () => {
               this.spinner.hide();
               this.toastr.success(GlobalMessages.ORDER_SUBMITTED);

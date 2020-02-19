@@ -9,4 +9,5 @@ export interface IUser {
   location: ILocation;
   email?: string;
   role?: string;
+  objectId?: string;
 }
