@@ -1,20 +1,35 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { IPizza, IPizzaType } from 'src/app/models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PizzaOrderComponent } from '../pizza-order/pizza-order.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
+import { PizzaService } from 'src/app/core/services/pizza.service';
+import { Subscription } from 'rxjs';
+import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { GlobalMessages } from 'src/app/shared/global.constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-pizza',
   templateUrl: './pizza.component.html',
   styleUrls: ['./pizza.component.scss']
 })
-export class PizzaComponent implements OnInit {
+export class PizzaComponent implements OnDestroy {
   @Input()
   pizza: IPizza;
   pizzaUnknownPhoto = '../../../assets/default-placeholder-250x250.png';
-  constructor(private modalService: NgbModal, private authService: AuthService, private router: Router) {}
+  subscribes: Subscription[] = [];
+  constructor(
+    private modalService: NgbModal,
+    private authService: AuthService,
+    private router: Router,
+    private pizzaService: PizzaService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
+  ) {}
   get isLogged() {
     return this.authService.isLogged;
   }
@@ -36,7 +51,10 @@ export class PizzaComponent implements OnInit {
     return this.pizza ? this.pizza.description : null;
   }
 
-  ngOnInit() {}
+  ngOnDestroy() {
+    this.spinner.hide();
+    this.subscribes.forEach(s => s.unsubscribe());
+  }
   handleOrder(type: IPizzaType, pizza: IPizza) {
     if (this.isAdmin) {
       return;
@@ -49,11 +67,33 @@ export class PizzaComponent implements OnInit {
     const order = { ...pizza, types: [type], quantity: 1 };
     modalRef.componentInstance.order = order;
     modalRef.result.then(
-      a => {
-        console.log(order, a);
+      qty => {
+        this.spinner.show();
+        const newOrder: IPizzaOrder = {
+          pizza,
+          type,
+          quantity: qty,
+          user: this.authService.User
+        };
+        this.subscribes.push(
+          this.pizzaService.makeOrder(newOrder).subscribe({
+            next: () => {
+              this.spinner.hide();
+              this.toastr.success(GlobalMessages.ORDER_SUBMITTED);
+            },
+            error: error => {
+              this.spinner.hide();
+              this.toastr.error(GlobalMessages.ORDER_FALIED);
+              if (!environment.production) {
+                console.error(error);
+              }
+            }
+          })
+        );
       },
       b => {
-        console.log(b);
+        // cancel
+        // console.log(b);
       }
     );
   }

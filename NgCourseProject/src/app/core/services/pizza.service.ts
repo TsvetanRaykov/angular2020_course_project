@@ -4,6 +4,7 @@ import { Parse } from 'parse';
 import { environment } from 'src/environments/environment';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,26 @@ export class PizzaService implements IPizzaService {
     pizzaQuery.descending('updatedAt');
     return from(pizzaQuery.find()).pipe(map((p: any) => JSON.parse(JSON.stringify(p))));
   }
+
+  makeOrder(order: IPizzaOrder): Observable<any> {
+    const Order = Parse.Object.extend('Order');
+    const User = Parse.Object.extend('User');
+    const Pizza = Parse.Object.extend('Pizza');
+
+    const { pizza, user, quantity } = order;
+    const { weight, price, size } = order.type;
+
+    const newOrder = new Order();
+    newOrder.set('pizza', new Pizza(pizza));
+    newOrder.set('user', new User(user));
+    newOrder.set('quantity', quantity);
+    newOrder.set('weight', weight);
+    newOrder.set('price', price);
+    newOrder.set('size', size);
+    newOrder.set('status', 'new');
+    return from(newOrder.save());
+  }
+
   getOneById(id: string): IPizza {
     throw new Error('Method not implemented.');
   }

@@ -12,4 +12,6 @@ export class GlobalMessages {
   static readonly USER_UPDATE_SUCCESS = 'User data has been updated';
   static readonly USER_UPDATE_NO_CHANGES = 'Nothing to change ...';
   static readonly USER_UPDATE_FAILED = 'User update failed. Please, inform the support!';
+  static readonly ORDER_SUBMITTED = 'You order has been submitted. Thank you!';
+  static readonly ORDER_FALIED = "Submit failed. We're sorry! Please, try again later.";
 }
