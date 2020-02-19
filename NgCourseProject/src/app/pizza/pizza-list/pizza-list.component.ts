@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class PizzaListComponent implements OnInit {
   pizzas: IPizza[];
   constructor(private activatedRoute: ActivatedRoute) {
-    this.pizzas = activatedRoute.snapshot.data[0];
+    this.pizzas = this.activatedRoute.snapshot.data[0];
   }
 
   ngOnInit() {}

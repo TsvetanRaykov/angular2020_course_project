@@ -52,7 +52,7 @@ export class RegisterComponent implements OnDestroy {
     const aUser: IUser = {
       username: this.user('email'),
       password: this.user('password'),
-      fullName: `${this.user('firstname')} ${this.user('lastname')}`,
+      fullName: `${this.user('firstname') || ''} ${this.user('lastname') || ''}`,
       phone: this.user('phone'),
       address: this.location.address.slice(),
       location: this.location
