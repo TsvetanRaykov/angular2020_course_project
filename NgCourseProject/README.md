@@ -1,27 +1,75 @@
-# NgCourseProject
+# Pizza Delivery
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.22.
 
-## Development server
+## Тype:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Pizza shop. Order management from submit to dispatch.
 
-## Code scaffolding
+## Description:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Deals with the relationship between the customer and the pizzeria.
 
-## Build
+## Functionality
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+The platform supports two roles: `user` and `staff`.  
+Each `user` can see the menu - a list of offered pizzas with their data. But in order to place an order, it must be registered.  
+The registration is done on the registration page, where the user has to provide his/her credentials and a delivery address selected by google map. He may change this information later in the account page.  
+Registered users can monitor the status of their own orders. They may also terminate their registration in the system.
 
-## Running unit tests
+Each `staff` member can add a new Pizza to the menu, and to edit existing Pizza details. He also can change the status of the orders, and edit his own profile details.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Backend
 
-## Running end-to-end tests
+Parse Server at [Back4App](https://www.back4app.com) is used for data storage and for user authentication.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Entities
 
-## Further help
+### User
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```json
+{
+  "objectId": "4BwpMWdCnm",
+  "username": "A string",
+  "email": "A string",
+  "useMasterKey": true,
+  "fullName": "A string",
+  "address": "A string",
+  "location": { "__type": "GeoPoint", "latitude": 40.0, "longitude": -30.0 },
+  "phone": 1,
+  "role": "A string",
+  "sessionToken": "A string",
+  "password": "#Password123",
+  "createdAt": "2018-11-06T00:52:01.520Z",
+  "updatedAt": "2018-11-06T00:52:04.713Z"
+}
+```
+
+### Pizza
+
+```json
+{
+  "types": [1, "a string"],
+  "name": "A string",
+  "weight": 1,
+  "photo": { "__type": "File", "name": "photo.jpg" },
+  "description": "A string",
+  "onSale": true,
+  "createdAt": "2018-11-06T00:52:01.520Z",
+  "updatedAt": "2018-11-06T00:52:04.713Z"
+}
+```
+
+### Order
+
+```json
+{
+  "user": { "__type": "Pointer", "className": "_User", "objectId": "<THE_REFERENCED_OBJECT_ID>" },
+  "pizza": { "__type": "Pointer", "className": "Pizza", "objectId": "<THE_REFERENCED_OBJECT_ID>" },
+  "quantity": "A string",
+  "price": 1,
+  "weight": 1,
+  "size": "A string",
+  "status": "A string"
+}
+```
