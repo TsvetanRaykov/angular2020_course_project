@@ -7,4 +7,6 @@ export interface IPizzaOrder {
   quantity: number;
   createdAt?: Date;
   updatedAt?: Date;
+  size?: string;
+  weight?: number;
 }

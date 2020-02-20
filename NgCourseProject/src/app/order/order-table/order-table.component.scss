@@ -1,0 +1,27 @@
+.p-type-size,
+.p-type-weight,
+.p-type-price,
+.p-type-name {
+  display: inline-block;
+  font-weight: bold;
+  color: black;
+  font-style: italic;
+}
+.p-type-size {
+  display: inline-block;
+  margin-left: 10px;
+  color: green;
+}
+.p-type-weight {
+  padding: 0 5px;
+  font-weight: bold;
+}
+.p-type-measure {
+  font-size: x-small;
+  color: #6c757d;
+}
+
+.p-type-name {
+  font-size: large;
+  color: #007bff;
+}

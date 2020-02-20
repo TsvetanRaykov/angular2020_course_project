@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { Subscription } from 'rxjs';
@@ -9,15 +9,15 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./order-list.component.scss']
 })
 export class OrderListComponent implements OnDestroy {
-  subscriptions: Subscription[] = [];
   get isAdmin() {
     return this.userService.isAdmin;
   }
   constructor(private orderService: OrderService, private userService: AuthService) {
     if (this.isAdmin) {
-      this.orderService.listenOrders().subscribe(console.log);
+      this.subscriptions.push(this.orderService.listenOrders().subscribe(console.log));
     }
   }
+  subscriptions: Subscription[] = [];
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
