@@ -1,8 +1,10 @@
-import { Component, OnInit, QueryList, ViewChildren, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from './sortable.directive';
 import { Observable } from 'rxjs';
 import { OrderService } from 'src/app/core/services/order.service';
 import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-table',
@@ -10,7 +12,10 @@ import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
   styleUrls: ['./order-table.component.scss']
 })
 export class OrderTableComponent implements OnInit {
-  constructor(public service: OrderService) {
+  get isAdmin() {
+    return this.userService.isAdmin;
+  }
+  constructor(public service: OrderService, private userService: AuthService) {
     // const { results, count } = this.activatedRoute.snapshot.data[0];
     this.total$ = service.total$;
     this.orders$ = service.orders$;
@@ -42,5 +47,9 @@ export class OrderTableComponent implements OnInit {
 
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
+  }
+
+  handleOrderStatusChange(order: IPizzaOrder, status: string) {
+    this.service.updateOrder({ ...order, status }).subscribe(console.log);
   }
 }

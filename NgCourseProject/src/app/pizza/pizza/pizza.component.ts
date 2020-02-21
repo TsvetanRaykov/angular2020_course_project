@@ -73,7 +73,8 @@ export class PizzaComponent implements OnDestroy {
           pizza,
           type,
           quantity: qty,
-          user: this.authService.User
+          user: this.authService.User,
+          status: 'new'
         };
         this.subscribes.push(
           this.orderService.makeOrder(newOrder).subscribe({

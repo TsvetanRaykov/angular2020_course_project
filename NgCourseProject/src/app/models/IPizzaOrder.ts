@@ -9,4 +9,6 @@ export interface IPizzaOrder {
   updatedAt?: Date;
   size?: string;
   weight?: number;
+  status: string;
+  objectId?: string;
 }
