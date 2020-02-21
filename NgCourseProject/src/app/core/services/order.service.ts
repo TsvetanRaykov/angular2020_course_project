@@ -7,6 +7,7 @@ import { Parse } from 'parse';
 import { environment } from 'src/environments/environment';
 import { IUser, IOrderServiceState, TSortDirection, IOrdersSortResult } from 'src/app/models';
 import { map, tap, debounceTime, switchMap, delay, mapTo } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 interface IParseResult {
   results: [];
@@ -30,7 +31,7 @@ export class OrderService {
   private _sort$ = new Subject<void>();
   private _orders$ = new BehaviorSubject<IPizzaOrder[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  constructor() {
+  constructor(private userService: AuthService) {
     Parse.initialize(environment.PARSE_APP_ID, environment.PARSE_JS_KEY);
     Parse.serverURL = environment.serverURL;
     this._sort$
@@ -140,15 +141,16 @@ export class OrderService {
     );
   }
 
-  getOrders(user?: IUser, status?: TStatus): Observable<IOrdersSortResult> {
+  getOrders(): Observable<IOrdersSortResult> {
     const Order = Parse.Object.extend('Order');
     const User = Parse.Object.extend('User');
     const orderQuery = new Parse.Query(Order);
     orderQuery.include('pizza');
     orderQuery.include('user');
     orderQuery.withCount();
-    if (user) {
-      orderQuery.equalTo('user', new User(user));
+
+    if (!this.userService.isAdmin) {
+      orderQuery.equalTo('user', new User(this.userService.User));
     }
     if (status) {
       orderQuery.equalTo('status', status);

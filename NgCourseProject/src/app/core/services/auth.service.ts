@@ -3,7 +3,7 @@ import { Parse } from 'parse';
 import { environment } from '../../../environments/environment';
 import { IUser, IAuthService } from '../../models';
 import { from, Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, delay } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -44,11 +44,13 @@ export class AuthService implements IAuthService {
   }
 
   logIn(username: string, password: string): Observable<any> {
-    return from(Parse.User.logIn(username, password)).pipe(debounceTime(1000));
+    Parse.User.enableUnsafeCurrentUser();
+    return from(Parse.User.logIn(username, password)).pipe(debounceTime(500));
   }
 
   logOut(): Observable<any> {
-    return from(Parse.User.logOut()).pipe(debounceTime(1000));
+    Parse.User.enableUnsafeCurrentUser();
+    return from(Parse.User.logOut()).pipe(debounceTime(500), delay(2000));
   }
 
   update(changes: {}): Observable<any> {

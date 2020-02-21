@@ -24,6 +24,7 @@ export class PizzaService implements IPizzaService {
   getAll(): Observable<IPizza[]> {
     const Pizza = Parse.Object.extend('Pizza');
     const pizzaQuery = new Parse.Query(Pizza);
+
     pizzaQuery.descending('updatedAt');
     return from(pizzaQuery.find()).pipe(map((p: any) => JSON.parse(JSON.stringify(p))));
   }

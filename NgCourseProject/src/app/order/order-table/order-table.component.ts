@@ -1,10 +1,9 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from './sortable.directive';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { OrderService } from 'src/app/core/services/order.service';
 import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-table',
@@ -15,6 +14,7 @@ export class OrderTableComponent implements OnInit {
   get isAdmin() {
     return this.userService.isAdmin;
   }
+  subscriptions: Subscription[] = [];
   constructor(public service: OrderService, private userService: AuthService) {
     // const { results, count } = this.activatedRoute.snapshot.data[0];
     this.total$ = service.total$;
