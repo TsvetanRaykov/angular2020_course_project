@@ -48,14 +48,10 @@ export class KinveyOrderService {
         tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this.getOrders()),
-        // delay(200),
         tap(() => this._loading$.next(false))
       )
       .subscribe(result => {
-        // this.collection.count().subscribe(z => {
         this._orders$.next(result);
-        // this._total$.next(+z);
-        // });
       });
     this._sort$.next();
   }
@@ -115,28 +111,29 @@ export class KinveyOrderService {
   private _total$ = new BehaviorSubject<number>(0);
 
   makeOrder(order: IPizzaOrder): Observable<any> {
+    // console.log(order);
     const { name, description, _id } = order.pizza;
     const { size, weight, price } = order.type;
-    const { status, user, quantity } = order;
-    const { fullName, location, email, phone } = user;
+    // const { status, user, quantity } = order;
+    const { fullName, location, email, phone } = order.user;
 
     const newOrder: TKinveyOrderType = {
+      ...order,
       description,
       name,
       email,
       location,
       phone,
       pizzaId: _id,
-      quantity,
       singlePrice: price,
       size,
-      status,
-      totalPrice: quantity * price,
-      userId: user._id,
+      totalPrice: order.quantity * price,
+      userId: order.user._id,
       username: fullName,
       weight
     };
 
+    // console.log(newOrder);
     return from(this.collection.save(newOrder).then(() => this._sort$.next()));
   }
 
@@ -154,7 +151,6 @@ export class KinveyOrderService {
     const orderQuery = new Query();
     if (!this.userService.isAdmin) {
       const uid = this.userService.User.email;
-      console.log(uid);
       orderQuery.equalTo('email', uid);
     }
 
@@ -175,10 +171,11 @@ export class KinveyOrderService {
       map((x: TKinveyOrderType[]): IPizzaOrder[] => {
         return x.map(d => {
           return {
+            _id: d._id,
             size: d.size,
             weight: d.weight,
             price: d.quantity * d.singlePrice,
-            createdAt: d._kmd.ect,
+            createdAt: d._kmd?.ect,
             pizza: { description: d.description, name: d.name, onSale: null, weight: d.weight, photo: null, types: [] },
             quantity: d.quantity,
             status: d.status,

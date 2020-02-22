@@ -50,6 +50,7 @@ export class OrderTableComponent implements OnInit {
   }
 
   handleOrderStatusChange(order: IPizzaOrder, status: string) {
-    this.service.updateOrder({ ...order, status }).subscribe(console.log);
+    console.log(status);
+    this.service.updateOrder({ ...order, status }).subscribe();
   }
 }
