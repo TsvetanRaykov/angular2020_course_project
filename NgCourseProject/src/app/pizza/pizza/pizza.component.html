@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'pizza-admin': isAdmin && !!pizza?.objectId }" class="card mb-3" style="max-width: 480px;">
+<div [ngClass]="{ 'pizza-admin': isAdmin && (!!pizza?.objectId || !!pizza?._id) }" class="card mb-3" style="max-width: 480px;">
   <div class="row no-gutters">
     <div [ngClass]="{ 'no-pizza': !pizza || !pizza.photo }" class="col-md-4 d-flex flex-column justify-content-center pizza-placeholder">
       <img [src]="photoSrc" class="card-img align-middle" alt="Pizza photo" title="{{ pizza ? pizza.name : 'Pizza photo become here' }}" />
@@ -24,7 +24,7 @@
                 [ngClass]="{ 'order-inactive': !isLogged }"
                 class="btn "
                 title="Order it"
-                (click)="!!pizza?.objectId && handleOrder(type, pizza)"
+                (click)="(!!pizza?.objectId || !!pizza?._id) && handleOrder(type, pizza)"
               >
                 order
               </button>

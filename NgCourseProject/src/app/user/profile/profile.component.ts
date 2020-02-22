@@ -3,11 +3,11 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { MustMatch } from 'src/app/shared/must-match.validator';
 import { GlobalMessages } from 'src/app/shared/global.constants';
 import { ILocation, IUser } from 'src/app/models';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { KinveyUserAuthService } from 'src/app/core/services/kinvey-user-auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: KinveyUserAuthService,
     private toastr: ToastrService,
     private componentFactory: ComponentFactoryResolver,
     private spinner: NgxSpinnerService

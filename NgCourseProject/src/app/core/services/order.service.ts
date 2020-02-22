@@ -7,7 +7,7 @@ import { Parse } from 'parse';
 import { environment } from 'src/environments/environment';
 import { IUser, IOrderServiceState, TSortDirection, IOrdersSortResult } from 'src/app/models';
 import { map, tap, debounceTime, switchMap, delay, mapTo } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+import { KinveyUserAuthService } from './kinvey-user-auth.service';
 
 interface IParseResult {
   results: [];
@@ -17,7 +17,7 @@ type TStatus = 'new' | 'processing' | 'dispatched';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+class OrderService {
   liveQuerryClient: any;
   subscription: any;
   private _state: IOrderServiceState = {
@@ -31,7 +31,7 @@ export class OrderService {
   private _sort$ = new Subject<void>();
   private _orders$ = new BehaviorSubject<IPizzaOrder[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  constructor(private userService: AuthService) {
+  constructor(private userService: KinveyUserAuthService) {
     Parse.initialize(environment.PARSE_APP_ID, environment.PARSE_JS_KEY);
     Parse.serverURL = environment.serverURL;
     this._sort$

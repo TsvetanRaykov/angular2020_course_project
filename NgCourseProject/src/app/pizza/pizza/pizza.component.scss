@@ -78,16 +78,10 @@
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-.btn:hover
-// .btn:focus,
-// .btn:active
- {
+.btn:hover {
   color: #fff;
 }
-.btn:hover:before
-// .btn:focus:before,
-// .btn:active:before
- {
+.btn:hover:before {
   -webkit-transform: scaleY(1);
   transform: scaleY(1);
 }

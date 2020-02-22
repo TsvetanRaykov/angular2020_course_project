@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { IPizza, IPizzaType } from 'src/app/models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PizzaOrderComponent } from '../pizza-order/pizza-order.component';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
@@ -10,7 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GlobalMessages } from 'src/app/shared/global.constants';
 import { environment } from 'src/environments/environment';
-import { OrderService } from 'src/app/core/services/order.service';
+import { KinveyOrderService } from 'src/app/core/services/kinvey-order.service';
+import { KinveyUserAuthService } from 'src/app/core/services/kinvey-user-auth.service';
 
 @Component({
   selector: 'app-pizza',
@@ -24,9 +24,9 @@ export class PizzaComponent implements OnDestroy {
   subscribes: Subscription[] = [];
   constructor(
     private modalService: NgbModal,
-    private authService: AuthService,
+    private authService: KinveyUserAuthService,
     private router: Router,
-    private orderService: OrderService,
+    private orderService: KinveyOrderService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
   ) {}
@@ -74,7 +74,8 @@ export class PizzaComponent implements OnDestroy {
           type,
           quantity: qty,
           user: this.authService.User,
-          status: 'new'
+          status: 'new',
+          price: type.price
         };
         this.subscribes.push(
           this.orderService.makeOrder(newOrder).subscribe({

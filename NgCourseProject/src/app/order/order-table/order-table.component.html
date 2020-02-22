@@ -9,39 +9,39 @@
       <tr>
         <th
           [ngClass]="{
-            sorted: service.sortColumn === 'createdAt',
+            sorted: service.sortColumn === '_kmd.ect',
             asc: service.sortDirection === 'asc',
             desc: service.sortDirection === 'desc'
           }"
           scope="col"
           appSortable
-          column="createdAt"
+          column="_kmd.ect"
           (sort)="handleSort($event)"
         >
           Order time
         </th>
         <th
           [ngClass]="{
-            sorted: service.sortColumn === 'pizza.name',
+            sorted: service.sortColumn === 'name',
             asc: service.sortDirection === 'asc',
             desc: service.sortDirection === 'desc'
           }"
           scope="col"
           appSortable
-          column="pizza.name"
+          column="name"
           (sort)="handleSort($event)"
         >
           Pizza
         </th>
         <th
           [ngClass]="{
-            sorted: service.sortColumn === 'pizza.user.address',
+            sorted: service.sortColumn === 'location.address',
             asc: service.sortDirection === 'asc',
             desc: service.sortDirection === 'desc'
           }"
           scope="col"
           appSortable
-          column="pizza.user.address"
+          column="location.address"
           (sort)="handleSort($event)"
         >
           Delivery address
@@ -102,6 +102,10 @@
             >{{ order?.weight }}
             <span class="p-type-measure">gr.</span>
           </span>
+          <span class="p-type-weight"
+            >{{ order.type?.price }}
+            <span class="p-type-measure">bgn.</span>
+          </span>
         </td>
         <td class="align-middle" scope="col">
           {{ order.user.address }}
@@ -132,7 +136,8 @@
       </tr>
     </tbody>
   </table>
-  <div class="d-flex justify-content-between p-2">
+
+  <!-- <div class="d-flex justify-content-between p-2">
     <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page" [pageSize]="service.pageSize"> </ngb-pagination>
 
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
@@ -140,5 +145,5 @@
       <option [ngValue]="4">4 items per page</option>
       <option [ngValue]="6">6 items per page</option>
     </select>
-  </div>
+  </div> -->
 </form>

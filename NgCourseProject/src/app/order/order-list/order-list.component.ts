@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { OrderService } from 'src/app/core/services/order.service';
 import { Subscription } from 'rxjs';
+import { KinveyUserAuthService } from 'src/app/core/services/kinvey-user-auth.service';
+import { KinveyOrderService } from 'src/app/core/services/kinvey-order.service';
 
 @Component({
   selector: 'app-order-list',
@@ -12,9 +12,9 @@ export class OrderListComponent implements OnDestroy {
   get isAdmin() {
     return this.userService.isAdmin;
   }
-  constructor(private orderService: OrderService, private userService: AuthService) {
+  constructor(private orderService: KinveyOrderService, private userService: KinveyUserAuthService) {
     if (this.isAdmin) {
-      this.subscriptions.push(this.orderService.listenOrders().subscribe(console.log));
+      // this.subscriptions.push(this.orderService.listenOrders().subscribe(console.log));
     }
   }
   subscriptions: Subscription[] = [];

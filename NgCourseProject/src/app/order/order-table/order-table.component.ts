@@ -1,9 +1,9 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from './sortable.directive';
 import { Observable, Subscription } from 'rxjs';
-import { OrderService } from 'src/app/core/services/order.service';
 import { IPizzaOrder } from 'src/app/models/IPizzaOrder';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { KinveyUserAuthService } from 'src/app/core/services/kinvey-user-auth.service';
+import { KinveyOrderService } from 'src/app/core/services/kinvey-order.service';
 
 @Component({
   selector: 'app-order-table',
@@ -15,10 +15,10 @@ export class OrderTableComponent implements OnInit {
     return this.userService.isAdmin;
   }
   subscriptions: Subscription[] = [];
-  constructor(public service: OrderService, private userService: AuthService) {
+  constructor(public service: KinveyOrderService, private userService: KinveyUserAuthService) {
     // const { results, count } = this.activatedRoute.snapshot.data[0];
-    this.total$ = service.total$;
     this.orders$ = service.orders$;
+    this.total$ = service.total$;
   }
 
   orders$: Observable<IPizzaOrder[]>;

@@ -11,4 +11,5 @@ export interface IPizzaOrder {
   weight?: number;
   status: string;
   objectId?: string;
+  price: number;
 }

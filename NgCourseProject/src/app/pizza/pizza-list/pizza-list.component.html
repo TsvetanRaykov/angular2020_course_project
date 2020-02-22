@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="d-flex flex-wrap">
     <div class="pizza m-2" *ngFor="let pizza of pizzas">
-      <app-pizza [pizza]="pizza"></app-pizza>
+      <app-pizza [pizza]="pizza" (click)="handleClick(pizza._id)"></app-pizza>
     </div>
   </div>
 </div>

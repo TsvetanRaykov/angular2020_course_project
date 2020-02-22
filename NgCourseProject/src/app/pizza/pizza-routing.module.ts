@@ -10,8 +10,8 @@ const routes: Routes = [
     path: 'pizza',
     children: [
       { path: '', pathMatch: 'full', component: PizzaListComponent, resolve: [PizzaListResolver] },
-      { path: 'new', canActivate: [AdminGuard], component: PizzaNewComponent },
-      { path: 'edit/:id', component: PizzaEditComponent }
+      { path: 'new', canActivate: [AdminGuard], component: PizzaNewComponent }
+      // { path: 'edit/:id', canActivate: [AdminGuard], component: PizzaEditComponent }
     ]
   }
 ];

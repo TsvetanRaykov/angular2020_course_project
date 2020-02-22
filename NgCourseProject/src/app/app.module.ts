@@ -12,6 +12,7 @@ import { NotFound404Component } from './not-found404/not-found404.component';
 import { PizzaModule } from './pizza/pizza.module';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { OrderModule } from './order/order.module';
+import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [AppComponent, NotFound404Component, UnauthorizedComponent],
   imports: [

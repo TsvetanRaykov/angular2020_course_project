@@ -8,7 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class PizzaService implements IPizzaService {
+class PizzaService implements IPizzaService {
+  delete(id: string): Observable<boolean> {
+    throw new Error('Method not implemented.');
+  }
   constructor() {
     Parse.initialize(environment.PARSE_APP_ID, environment.PARSE_JS_KEY);
     Parse.serverURL = environment.serverURL;
@@ -29,10 +32,10 @@ export class PizzaService implements IPizzaService {
     return from(pizzaQuery.find()).pipe(map((p: any) => JSON.parse(JSON.stringify(p))));
   }
 
-  getOneById(id: string): IPizza {
+  getOneById(id: string): Observable<IPizza> {
     throw new Error('Method not implemented.');
   }
-  update(pizza: IPizza): boolean {
+  update(pizza: IPizza): Observable<any> {
     throw new Error('Method not implemented.');
   }
 }

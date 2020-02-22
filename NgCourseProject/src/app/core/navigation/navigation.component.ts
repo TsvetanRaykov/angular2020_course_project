@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { IUser } from '../../models';
 import { Subscription } from 'rxjs';
@@ -7,6 +6,7 @@ import { GlobalMessages } from 'src/app/shared/global.constants';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
+import { KinveyUserAuthService } from '../services/kinvey-user-auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -27,7 +27,7 @@ export class NavigationComponent implements OnDestroy {
   }
 
   constructor(
-    private authService: AuthService,
+    private authService: KinveyUserAuthService,
     private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService

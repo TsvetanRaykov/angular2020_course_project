@@ -7,7 +7,7 @@ import { debounceTime, delay } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements IAuthService {
+class AuthService implements IAuthService {
   get User(): IUser | undefined {
     const currentUser = Parse.User.current();
     return !!currentUser ? JSON.parse(JSON.stringify(currentUser)) : undefined;
@@ -18,7 +18,7 @@ export class AuthService implements IAuthService {
   }
 
   get isAdmin() {
-    return this.isLogged && this.User.role === 'staff';
+    return this.isLogged && this.User.userRole === 'staff';
   }
 
   constructor() {
@@ -38,7 +38,7 @@ export class AuthService implements IAuthService {
     newUser.set('fullName', user.fullName);
     newUser.set('phone', user.phone);
     newUser.set('location', location);
-    newUser.set('role', 'user');
+    newUser.set('role', user.userRole);
 
     return from(newUser.signUp());
   }

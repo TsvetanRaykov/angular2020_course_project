@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { PizzaService } from '../../core/services/pizza.service';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GlobalMessages } from '../../shared/global.constants';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IPizza, IPizzaType } from 'src/app/models';
+import { KinveyPizzaService } from 'src/app/core/services/kinvey-pizza.service';
 
 @Component({
   selector: 'app-pizza-new',
@@ -30,7 +30,7 @@ export class PizzaNewComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private pizzaService: PizzaService,
+    private pizzaService: KinveyPizzaService,
     private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService

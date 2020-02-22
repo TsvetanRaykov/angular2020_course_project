@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MustMatch } from '../../shared/must-match.validator';
-import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { GlobalMessages } from '../../shared/global.constants';
@@ -9,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { IUser, ILocation } from '../../models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { KinveyUserAuthService } from 'src/app/core/services/kinvey-user-auth.service';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +21,7 @@ export class RegisterComponent implements OnDestroy {
   subscribes: Subscription[] = [];
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: KinveyUserAuthService,
     private toastr: ToastrService,
     private router: Router,
     private spinner: NgxSpinnerService
@@ -51,29 +51,21 @@ export class RegisterComponent implements OnDestroy {
     this.spinner.show();
     const aUser: IUser = {
       username: this.user('email'),
+      email: this.user('email'),
       password: this.user('password'),
       fullName: `${this.user('firstname') || ''} ${this.user('lastname') || ''}`,
       phone: this.user('phone'),
       address: this.location.address.slice(),
-      location: this.location
+      location: this.location,
+      userRole: 'user',
+      _id: null
     };
     this.subscribes.push(
       this.authService.signUp(aUser).subscribe({
         next: () => {
           this.spinner.hide();
           this.toastr.success(GlobalMessages.REGISTRATION_SUCCESS);
-          this.authService.logIn(aUser.username, aUser.password).subscribe({
-            next: () => {
-              this.toastr.success(GlobalMessages.LOGIN_SUCCESS);
-              this.router.navigate(['/']);
-            },
-            error: error => {
-              this.toastr.error(GlobalMessages.LOGIN_FAILED);
-              if (!environment.production) {
-                console.error(error);
-              }
-            }
-          });
+          this.router.navigateByUrl('/');
         },
         error: error => {
           this.spinner.hide();
